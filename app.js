@@ -1,28 +1,32 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const cors = require('cors');       // ✅ correctly imported
+const app = express();
 
-require('./db/connection.js')
+require('./db/connection.js');      // ✅ database connection
+
+const products = require('./model/product.js');
+const defaultData = require('./default/dafault.js');
 
 const port = 1000;
 
-const products = require('./model/product.js')
-const defaultData = require('./default/dafault.js')
+// ✅ Middleware
+app.use(express.json());
+app.use(cors()); // Allow all origins (for local testing)
 
-const cors = 'cors'
-app.use(express.json())
-app.use(cors())
-
-app.get('/getProducts',async(req,res)=>{
-    try{
-        const data = await products.find({})
-        res.json(data)
-    }catch(error){
-        res.json(error.message)
-    }
+// ✅ Routes
+app.get('/getProducts', async (req, res) => {
+  try {
+    const data = await products.find({});
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-app.listen(port,()=>{
-    console.log(`Server is running on port ${port}`)
-})
+// ✅ Start Server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
-defaultData()
+// ✅ Load default data (if needed)
+defaultData();
