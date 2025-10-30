@@ -8,7 +8,7 @@ const port = 1000;
 const products = require('./model/product.js')
 const defaultData = require('./default/dafault.js')
 
-const cors = require('cors')
+const cors = 'cors'
 app.use(express.json())
 app.use(cors())
 
@@ -16,8 +16,8 @@ app.get('/getProducts',async(req,res)=>{
     try{
         const data = await products.find({})
         res.json(data)
-    }catch(err){
-        res.json(err)
+    }catch(error){
+        res.json(error.message)
     }
 });
 
@@ -26,12 +26,3 @@ app.listen(port,()=>{
 })
 
 defaultData()
-
-
-
-
-
-
-
-
-
